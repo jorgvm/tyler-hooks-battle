@@ -12,39 +12,26 @@ const styles = {
   }
 };
 
-export default function Loading({ speed, text }) {
-  const interval = React.useRef();
+export default function Loading({ text = "Loading", speed = 300 }) {
   const [content, setContent] = React.useState(text);
 
   React.useEffect(
     () => {
-      interval.current = window.setInterval(() => {
-        setContent(content => content + ".");
+      const id = window.setInterval(() => {
+        setContent(content =>
+          content === `${text}...` ? text : content + "."
+        );
       }, speed);
 
-      return () => window.clearInterval(interval.current);
+      return () => window.clearInterval(id);
     },
-    [content, speed, text]
-  );
-
-  React.useEffect(
-    () => {
-      if (content === text + "....") {
-        setContent(text);
-      }
-    },
-    [content, text]
+    [speed, text]
   );
 
   return <p style={styles.content}>{content}</p>;
 }
 
 Loading.propTypes = {
-  text: PropTypes.string.isRequired,
-  speed: PropTypes.number.isRequired
-};
-
-Loading.defaultProps = {
-  text: "Loading",
-  speed: 300
+  text: PropTypes.string,
+  speed: PropTypes.number
 };

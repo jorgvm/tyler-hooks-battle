@@ -1,6 +1,6 @@
 import React from "react";
 
-export function useHover() {
+export default function useHover() {
   const [hovering, setHovering] = React.useState(false);
 
   const mouseOver = () => setHovering(true);
